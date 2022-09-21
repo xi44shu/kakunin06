@@ -1,0 +1,9 @@
+<%= form_with model: @team, url:teams_path, local: true do |f| %>
+<%= f.text_field :team_name, placeholder:"班名", maxlength:"40" %>
+<%= f.text_field :affiliation, placeholder:"所属", maxlength:"40" %>
+<%= f.radio_button :work, :true %>
+<%= f.label :work, "稼働中", {value: :true, style: "display: inline-block;"} %>
+<%= f.radio_button :work, :false %>
+<%= f.label :work, "休み", {value: :false, style: "display: inline-block;"} %>
+<%= f.submit "登録する" %>
+<% end %>
