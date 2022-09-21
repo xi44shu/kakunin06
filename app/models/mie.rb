@@ -17,7 +17,7 @@ class Mie < ActiveHash::Base
     { id: 15, name: '四日市' },
   ]
 
-  # include ActiveHash::Associations
-  # has_many :schedules
+  include ActiveHash::Associations
+  has_many :schedules
 
 end

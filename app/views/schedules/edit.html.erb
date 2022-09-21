@@ -1,0 +1,39 @@
+<div class="schedule_edit">予約を変更する</div>
+<%= form_with model: @schedule, url: schedules_path, method: :put, local: true do |f| %>
+<div class="hissu_input">必須項目</div>
+<%= f.label :日付を選択, class: 'lavel' %>
+<%= f.date_field :scheduled_date, class: 'date-select' %>
+<%= f.label :施工班を選択, class: 'lavel' %>
+<%= f.collection_select(:team_id, Team.where(work: '1'), :id, :team_name, {}, {class:"team-select"}) %>
+<%= f.label :時間帯を選択, class: 'lavel' %>
+<%= f.collection_select(:time_zone_id, TimeZone.all, :id, :name, {}, {class:"time_zone-select"}) %>
+<%= f.label :サイズを選択, class: 'lavel' %>
+<%= f.collection_select(:size_id, Size.all, :id, :name, {}, {class:"size-select"}) %>
+<%= f.label :予約確度を選択, class: 'lavel' %>
+<%= f.collection_select(:accuracy_id, Accuracy.all, :id, :name, {}, {class:"accuracy-select"}) %>
+<%= f.label :場所を選択, class: 'lavel' %>
+<%= f.collection_select(:mie_id, Mie.all, :id, :name, {}, {class:"mie-select"}) %>
+<%= f.label :連絡元を選択, class: 'lavel' %>
+<%= f.collection_select(:first_contact_id, FirstContact.all, :id, :name, {}, {class:"first_contact-select"}) %>
+<%= f.submit "登録する" %>
+<% end %>
+
+<div class="schedule_copy_create">新規予約する</div>
+<%= form_with model: @schedule, url: schedules_path, method: :post, local: true do |f| %>
+<div class="hissu_input">必須項目</div>
+<%= f.label :日付を選択, class: 'lavel' %>
+<%= f.date_field :scheduled_date, class: 'date-select' %>
+<%= f.label :施工班を選択, class: 'lavel' %>
+<%= f.collection_select(:team_id, Team.where(work: '1'), :id, :team_name, {}, {class:"team-select"}) %>
+<%= f.label :時間帯を選択, class: 'lavel' %>
+<%= f.collection_select(:time_zone_id, TimeZone.all, :id, :name, {}, {class:"time_zone-select"}) %>
+<%= f.label :サイズを選択, class: 'lavel' %>
+<%= f.collection_select(:size_id, Size.all, :id, :name, {}, {class:"size-select"}) %>
+<%= f.label :予約確度を選択, class: 'lavel' %>
+<%= f.collection_select(:accuracy_id, Accuracy.all, :id, :name, {}, {class:"accuracy-select"}) %>
+<%= f.label :場所を選択, class: 'lavel' %>
+<%= f.collection_select(:mie_id, Mie.all, :id, :name, {}, {class:"mie-select"}) %>
+<%= f.label :連絡元を選択, class: 'lavel' %>
+<%= f.collection_select(:first_contact_id, FirstContact.all, :id, :name, {}, {class:"first_contact-select"}) %>
+<%= f.submit "登録する" %>
+<% end %>

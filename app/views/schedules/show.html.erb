@@ -1,0 +1,13 @@
+予約日:<%= @schedule.scheduled_date %>
+時間帯:<%= @schedule.time_zone.name %>
+班:<%= @schedule.team.team_name %>
+サイズ:<%= @schedule.size.name %>
+予約確度:<%= @schedule.accuracy.name %>
+場所:<%= @schedule.mie.name %>
+連絡元:<%= @schedule.first_contact.name %>
+
+<%= link_to "予約を変更", edit_schedule_path(@schedule.id), class: :nav__btn %>
+<%= link_to "内容をコピー", edit_schedule_path(@schedule.id), class: :nav__btn %>
+
+
+<%= link_to "削除", schedule_path(@schedule.id), method: :delete,  class: :nav__btn  %>

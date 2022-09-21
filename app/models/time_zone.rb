@@ -6,7 +6,7 @@ class TimeZone < ActiveHash::Base
     { id: 4, name: '夜間' },
   ]
 
-  # include ActiveHash::Associations
-  # has_many :schedules
+  include ActiveHash::Associations
+  has_many :schedules
 
 end

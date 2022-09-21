@@ -6,7 +6,7 @@ class Accuracy < ActiveHash::Base
     { id: 4, name: 'その他' }
   ]
 
-  # include ActiveHash::Associations
-  # has_many :schedules
+  include ActiveHash::Associations
+  has_many :schedules
 
 end
