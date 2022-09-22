@@ -7,6 +7,7 @@ FactoryBot.define do
     mie_id { '2' }             
     first_contact_id { '2' }   
     content          { Faker::Lorem.sentence }
-    association :user, :team
+    association :user
+    association :team
   end
 end

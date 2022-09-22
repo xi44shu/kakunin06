@@ -9,7 +9,7 @@ class Schedule < ApplicationRecord
   belongs_to :mie
 
   with_options presence: true do
-    validates :user_id, :team_id, :scheduled_date
+    validates :scheduled_date
     validates :time_zone_id, :size_id, :accuracy_id, :first_contact_id,
     numericality: { other_than: 1, message: " can't be blank" }
     validates :mie_id, {numericality: true}

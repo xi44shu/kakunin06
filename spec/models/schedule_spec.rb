@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Schedule, type: :model do
   before do
-    user = FactoryBot.create(:user)
-    team = FactoryBot.create(:team)
-    @schedule = FactoryBot.build(:schedule, user_id:user.id, team_id:team.id)
+    @schedule = FactoryBot.create(:schedule)
   end
 
   describe '新規予約登録' do
