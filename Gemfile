@@ -61,4 +61,4 @@ gem 'cancancan'
 gem 'rails_admin'
 gem 'rails-i18n'
 gem 'active_hash'
-
+gem 'pry-rails'
