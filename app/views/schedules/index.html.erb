@@ -1,0 +1,138 @@
+
+<!-- 予約フォーム -->
+<%= form_with model: @schedules, url: schedules_path, local: true do |f| %>
+<%= f.label :日付を選択, class: 'lavel' %>
+<%= f.date_field :scheduled_date, class: 'date-select' %>
+<%= f.label :施工班を選択, class: 'lavel' %>
+<%= f.collection_select(:team_id, Team.where(work: '1'), :id, :team_name, {}, {class:"team-select"}) %>
+<%= f.label :時間帯を選択, class: 'lavel' %>
+<%= f.collection_select(:time_zone_id, TimeZone.all, :id, :name, {}, {class:"time_zone-select"}) %>
+<%= f.label :サイズを選択, class: 'lavel' %>
+<%= f.collection_select(:size_id, Size.all, :id, :name, {}, {class:"size-select"}) %>
+<%= f.label :予約確度を選択, class: 'lavel' %>
+<%= f.collection_select(:accuracy_id, Accuracy.all, :id, :name, {}, {class:"accuracy-select"}) %>
+<%= f.label :場所を選択, class: 'lavel' %>
+<%= f.collection_select(:mie_id, Mie.all, :id, :name, {}, {class:"mie-select"}) %>
+<%= f.label :連絡元を選択, class: 'lavel' %>
+<%= f.collection_select(:first_contact_id, FirstContact.all, :id, :name, {}, {class:"first_contact-select"}) %>
+<%= f.submit "登録する" %>
+<% end %>
+
+<div class='calendarsbox'>
+  <div class='calendars'>
+    <div class='calendar'>
+      <% @week_days.each do |day|%>
+        <div class='day-item'>
+          <div class='date'>
+            <%= day[:month] %>/<%= day[:date] %><br><%= day[:wday] %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+      <!-- 稼働している班数分繰り返す -->
+      <% @teams.each do |team| %>
+            <!-- １班に付き午前１週間・午後１週間の2回繰り返す -->
+            <% 2.times do |tz| %> 
+            <% tzid = 2 + tz %>
+    <div class='calendar'>
+                <% @week_days.each do |day| %>
+                  <div class='item'>
+                    <div class='item-date'>
+                      <%= day[:month] %>/<%= day[:date] %><%= day[:wday] %>
+                      <%= team.team_name %>班 <%= TimeZone.find(tzid).name %>
+                    </div>
+                    <div class='content'>
+                      <% @schedules.each do |cal| %>
+                        <% if day[:scheduled_date] == cal.scheduled_date && cal.time_zone_id == tzid && cal.team_id == team.id%>
+                          <div class="content_header">
+                            <div class="content_detail"><%= link_to "予約詳細", schedule_path(cal.id), class: :nav__btn %></div>
+                            <div class="content_detail"><%= Size.find(cal.size_id).name%></div>
+                          </div>
+                          <div class="content_body">
+                            <% case %>
+                            <% when cal.accuracy_id == 3 %> 
+                                <div class="content_body_top">
+                                  <div class="content_detail">時間:<%#= StartTime.find(cal.start_time_id).name%></div>
+                                  <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
+                                </div>
+                                <div class="content_body_middle">
+                                </div>
+                              <%when cal.accuracy_id == 2%>
+                                <div class="content_body_top">
+                                  <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
+                                </div>
+                                <div class="content_body_middle">
+                                  <div class="content_detail">これは仮予約です</div>
+                                    <div class="content_detail"><%= FirstContact.find(cal.first_contact_id).name%>より問い合わせ</div>
+                                </div>
+                                <%when cal.accuracy_id == 4%>
+                                <div class="content_body_middle">
+                                  <div class="content_detail">夜間明けの班です</div>
+                                </div>
+                                <%end%>
+                                    <% if cal.content != nil %>
+                                    <div class="content_body_bottom">
+                                  <div class="content_detail">コメント:有り</div>
+                                </div>
+                                <%end%>
+                            </div>
+                          <%end%>
+                        <%end%>
+                    </div>
+                  </div>
+                <% end %>
+    </div>
+          <% end %>
+      <% end %>
+
+<!-- 夜間工事 -->
+<% @teams.each do |team| %>
+    <div class='calendar'>
+                <% @week_days.each do |day| %>
+                  <div class='item'>
+                    <div class='item-date'>
+                      <%= day[:month] %>/<%= day[:date] %><%= day[:wday] %>
+                      <%= team.team_name %>班 <%= TimeZone.find(4).name %>
+                    </div>
+                    <div class='content'>
+                      <% @schedules.each do |cal| %>
+                        <% if day[:scheduled_date] == cal.scheduled_date && cal.time_zone_id == 4 && cal.team_id == team.id%>
+                          <div class="content_header">
+                            <div class="content_detail"><%= link_to "予約詳細", schedule_path(cal.id), class: :nav__btn %></div>
+                            <div class="content_detail"><%= Size.find(cal.size_id).name%></div>
+                          </div>
+                          <div class="content_body">
+                              <% if cal.accuracy_id == 3 %> 
+                                <div class="content_body_top">
+                                  <div class="content_detail">時間:<%#= StartTime.find(cal.start_time_id).name%></div>
+                                  <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
+                                </div>
+                                <div class="content_body_middle">
+                                </div>
+                              <%else cal.accuracy_id == 2%>
+                                <div class="content_body_top">
+                                  <div class="content_detail">夜明け班を確保してください<br>
+                                    場所:<%= Mie.find(cal.mie_id).name%></div>
+                                </div>
+                                <div class="content_body_middle">
+                                  <div class="content_detail">これは仮予約です</div>
+                                    <div class="content_detail"><%= FirstContact.find(cal.first_contact_id).name%>より問い合わせ</div>
+                                </div>
+                                  <%end%>
+                                    <% if cal.content != nil %>
+                                    <div class="content_body_bottom">
+                                  <div class="content_detail">コメント:有り</div>
+                                </div>
+                                <%end%>
+                            </div>
+                          <%end%>
+                        <%end%>
+                    </div>
+                  </div>
+                <% end %>
+    </div>
+    <% end %>
+
+
+  </div>
+</div>

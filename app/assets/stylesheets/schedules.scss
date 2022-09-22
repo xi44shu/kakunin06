@@ -1,0 +1,135 @@
+// Place all the styles related to the calendars controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  background-color: rgb(114, 151, 161);
+  margin: 33px;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.calendersbox {
+  height: 80vh;
+  width: 3vh;
+}
+
+.calender_header {
+  display: flex;
+  margin-top: 3vh;
+}
+
+.content_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.content_body_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content_detail {
+  width: 50%;
+}
+
+.calendars {
+  display: flex;
+  overflow: scroll;
+  height: 70vh;
+  width: 90vw;
+}
+
+.calendar {
+  flex-wrap: wrap;
+}
+
+.calendar-night {
+  flex-wrap: wrap;
+}
+
+.day-title {
+  margin: 0.5vw;
+  border: medium solid rgb(0, 0, 0);
+  width: 5vw;
+  height: 40px;
+  background-color: rgb(246, 253, 255);
+}
+
+.team-title {
+  margin: 0.5vw;
+  border: medium solid rgb(0, 0, 0);
+  width: 12vw;
+  height: 40px;
+  background-color: rgb(246, 253, 255);
+}
+
+.item {
+  margin: 0.5vw;
+  border: medium solid rgb(0, 0, 0);
+  width: 12vw;
+  height: 100px;
+  background-color: rgb(246, 253, 255);
+}
+
+.day-item {
+  margin: 0.5vw;
+  border: medium solid rgb(0, 0, 0);
+  width: 5vw;
+  height: 100px;
+  background-color: rgb(246, 253, 255);
+}
+
+.date {
+  height: 100%;
+  display: flex;
+  font-size: 3vh;
+  align-items: center;
+  justify-content: center;
+  border-bottom: medium solid rgb(0, 0, 0);
+}
+
+.content {
+  min-height: 25vh;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: scroll;
+}
+
+.plan-list {
+  font-size: 2vh;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15vh;
+}
+
+.lavel {
+  font-size: 3vh;
+  color: rgb(255, 255, 255);
+}
+
+.text-input {
+  height: 4vh;
+  width: 15vw;
+  margin: 0 2vw;
+}
+
+.date-select {
+  height: 4vh;
+  width: 13vw;
+  margin: 0 2vw;
+}
+
+.timezone-select{
+  height: 30px;
+  width: 100px;
+}
+
+.item-date{
+  text-align: center;
+}
