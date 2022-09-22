@@ -69,7 +69,7 @@ RSpec.describe "ログイン", type: :system do
       fill_in '名前', with: @user.name
       fill_in 'パスワード', with: @user.password
       # ログインボタンを押す
-        find('input[name="commit"]').click
+      find('input[name="commit"]').click
       # トップページへ遷移したことを確認する
       expect(current_path).to eq(root_path)
       # トップページにログアウトページへ遷移するボタンがあることを確認する
