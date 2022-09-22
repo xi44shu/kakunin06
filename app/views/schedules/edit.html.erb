@@ -1,5 +1,5 @@
 <div class="schedule_edit">予約を変更する</div>
-<%= form_with model: @schedule, url: schedules_path, method: :put, local: true do |f| %>
+<%= form_with model: @schedule, url: schedule_path, method: :put, local: true do |f| %>
 <div class="hissu_input">必須項目</div>
 <%= f.label :日付を選択, class: 'lavel' %>
 <%= f.date_field :scheduled_date, class: 'date-select' %>

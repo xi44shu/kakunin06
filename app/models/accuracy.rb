@@ -3,7 +3,9 @@ class Accuracy < ActiveHash::Base
     { id: 1, name: '---' },
     { id: 2, name: '仮予約' },
     { id: 3, name: '本予約' },
-    { id: 4, name: 'その他' }
+    { id: 4, name: '夜間明け' },
+    { id: 5, name: 'その他' },
+
   ]
 
   include ActiveHash::Associations

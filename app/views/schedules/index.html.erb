@@ -49,14 +49,15 @@
                             <div class="content_detail"><%= Size.find(cal.size_id).name%></div>
                           </div>
                           <div class="content_body">
-                              <% if cal.accuracy_id == 3 %> 
+                            <% case %>
+                            <% when cal.accuracy_id == 3 %> 
                                 <div class="content_body_top">
                                   <div class="content_detail">時間:<%#= StartTime.find(cal.start_time_id).name%></div>
                                   <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
                                 </div>
                                 <div class="content_body_middle">
                                 </div>
-                              <%else cal.accuracy_id == 2%>
+                              <%when cal.accuracy_id == 2%>
                                 <div class="content_body_top">
                                   <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
                                 </div>
@@ -64,7 +65,11 @@
                                   <div class="content_detail">これは仮予約です</div>
                                     <div class="content_detail"><%= FirstContact.find(cal.first_contact_id).name%>より問い合わせ</div>
                                 </div>
-                                  <%end%>
+                                <%when cal.accuracy_id == 4%>
+                                <div class="content_body_middle">
+                                  <div class="content_detail">夜間明けの班です</div>
+                                </div>
+                                <%end%>
                                     <% if cal.content != nil %>
                                     <div class="content_body_bottom">
                                   <div class="content_detail">コメント:有り</div>
@@ -106,7 +111,8 @@
                                 </div>
                               <%else cal.accuracy_id == 2%>
                                 <div class="content_body_top">
-                                  <div class="content_detail">場所:<%= Mie.find(cal.mie_id).name%></div>
+                                  <div class="content_detail">夜明け班を確保してください<br>
+                                    場所:<%= Mie.find(cal.mie_id).name%></div>
                                 </div>
                                 <div class="content_body_middle">
                                   <div class="content_detail">これは仮予約です</div>
