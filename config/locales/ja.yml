@@ -1,6 +1,11 @@
 ---
 ja:
   activerecord:
+    attributes:
+      user:
+        name: 名前
+      schedule:
+        scheduled_date: 予約日
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
@@ -179,6 +184,3 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
-  attributes:
-  user:
-    name: 名前
