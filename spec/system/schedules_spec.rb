@@ -6,7 +6,7 @@ require 'rails_helper'
 #     @team = FactoryBot.build(:team)
 #     @team.work = 'true'
 #     @team.save
-#     @schedule = FactoryBot.build(:schedule)
+#     @schedule = FactoryBot.build(:schedule, user_id:@user.id, team_id:@team.id)
 #   end
 
 #   context '新規予約登録ができるとき'do
@@ -34,6 +34,8 @@ require 'rails_helper'
 #       }.to change { Schedule.count }.by(1)
 #       # トップページに遷移する
 #       expect(current_path).to eq(root_path)
+#       # 予約詳細ページへのリンクがあることを確認する
+#       expect(page).to have_content('予約詳細')      
 #     end
 #   end
 #   context '新規予約登録ができないとき'do
@@ -46,13 +48,131 @@ require 'rails_helper'
 #   end
 # end
 
+
+RSpec.describe "詳細01", type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @team = FactoryBot.build(:team)
+    @team.work = 'true'
+    @team.save
+    @schedule = FactoryBot.create(:schedule, user_id:@user.id, team_id:@team.id)
+  end
+
+  context '予約の詳細が確認できるとき'do
+    it 'ログインしているユーザーは詳細ページに遷移して予約の詳細が表示される' do
+      # ログインする
+      visit new_user_session_path
+      fill_in '名前', with: @user.name
+      fill_in 'パスワード', with: @user.password
+      find('input[name="commit"]').click
+      # トップページに遷移する
+      expect(current_path).to eq(root_path)
+      # 予約詳細ページへのリンクがあることを確認する
+      expect(page).to have_content('予約詳細')
+      click_link '予約詳細'      
+      # 予約の詳細ページに遷移したことを確認確認する
+      expect(current_path).to eq(schedule_path(@schedule.id))
+    end
+    it 'ログインしていなくても詳細ページに遷移して予約の詳細が表示される' do
+      # トップページに遷移する
+      visit root_path
+      # 予約詳細ページへのリンクがあることを確認する
+      expect(page).to have_content('予約詳細')
+      click_link '予約詳細'      
+      # 予約の詳細ページに遷移したことを確認確認する
+      expect(current_path).to eq(schedule_path(@schedule.id))
+    end
+  end
+end
+
+RSpec.describe "詳細02", type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @team = FactoryBot.build(:team)
+    @team.work = 'true'
+    @team.save
+    @schedule = FactoryBot.build(:schedule, user_id:@user.id, team_id:@team.id)
+  end
+
+  context '予約の詳細が確認できないとき'do
+      it '予約がないとき' do
+        # ログインする
+        visit new_user_session_path
+        fill_in '名前', with: @user.name
+        fill_in 'パスワード', with: @user.password
+        find('input[name="commit"]').click
+        expect(current_path).to eq(root_path)
+        # 予約レコードの数が0を確認する
+        expect(Schedule.count).to eq 0
+        # トップページに遷移する
+        visit root_path
+        # 予約詳細ページへのリンクがないことを確認する
+        expect(page).to have_no_content('予約詳細')
+      end
+      it '予約はあるが、日程が過去のとき' do
+        # ログインする
+        visit new_user_session_path
+        fill_in '名前', with: @user.name
+        fill_in 'パスワード', with: @user.password
+        find('input[name="commit"]').click
+        expect(current_path).to eq(root_path)
+        # 新規予約ページへのリンクがあることを確認する
+        expect(page).to have_content('新規予約')
+        # 予約ページへ移動する
+        visit new_schedule_path
+        # フォームに情報を入力する
+        fill_in 'schedule[scheduled_date]', with: (@schedule.scheduled_date)-2
+        select "午前", from: 'schedule[time_zone_id]'
+        select "小", from: 'schedule[size_id]'
+        select "仮予約", from: 'schedule[accuracy_id]'
+        select "---", from: 'schedule[mie_id]'
+        select "営業", from: 'schedule[first_contact_id]'
+        # 送信するとScheduleモデルのカウントが1上がることを確認する
+        expect{
+          find('input[name="commit"]').click
+        }.to change { Schedule.count }.by(1)
+        # トップページに遷移する
+        expect(current_path).to eq(root_path)
+        # 予約詳細ページへのリンクがないことを確認する
+        expect(page).to have_no_content('予約詳細')
+        end
+        it '予約はあるが、日程が一覧表の範囲より先のとき' do
+        # ログインする
+        visit new_user_session_path
+        fill_in '名前', with: @user.name
+        fill_in 'パスワード', with: @user.password
+        find('input[name="commit"]').click
+        expect(current_path).to eq(root_path)
+        # 新規予約ページへのリンクがあることを確認する
+        expect(page).to have_content('新規予約')
+        # 予約ページへ移動する
+        visit new_schedule_path
+        # フォームに情報を入力する
+        fill_in 'schedule[scheduled_date]', with: (@schedule.scheduled_date)+7
+        select "午前", from: 'schedule[time_zone_id]'
+        select "小", from: 'schedule[size_id]'
+        select "仮予約", from: 'schedule[accuracy_id]'
+        select "---", from: 'schedule[mie_id]'
+        select "営業", from: 'schedule[first_contact_id]'
+        # 送信するとScheduleモデルのカウントが1上がることを確認する
+        expect{
+          find('input[name="commit"]').click
+        }.to change { Schedule.count }.by(1)
+        # トップページに遷移する
+        expect(current_path).to eq(root_path)
+        # 予約詳細ページへのリンクがないことを確認する
+        expect(page).to have_no_content('予約詳細')
+      end
+  end
+end
+
 # RSpec.describe "編集", type: :system do
 #   before do
 #     @user = FactoryBot.create(:user)
 #     @team = FactoryBot.build(:team)
 #     @team.work = 'true'
 #     @team.save
-#     @schedule = FactoryBot.create(:schedule)
+#     @schedule = FactoryBot.create(:schedule, user_id:@user.id, team_id:@team.id)
 #   end
 
 #   context '予約の編集ができるとき'do
@@ -100,7 +220,7 @@ require 'rails_helper'
 #     @team = FactoryBot.build(:team)
 #     @team.work = 'true'
 #     @team.save
-#     @schedule = FactoryBot.create(:schedule)
+#     @schedule = FactoryBot.create(:schedule, user_id:@user.id, team_id:@team.id)
 #   end
 
 #   context '予約の削除ができるとき'do
@@ -123,7 +243,7 @@ require 'rails_helper'
 #       visit root_path
 #     end
 #   end
-#   context '予約削除登録ができないとき'do
+#   context '予約削除ができないとき'do
 #     it 'ログインしていないと予約削除ページに遷移できない' do
 #       # トップページに遷移する
 #       visit root_path
@@ -132,41 +252,3 @@ require 'rails_helper'
 #     end
 #   end
 # end
-
-RSpec.describe "詳細", type: :system do
-  before do
-    @user = FactoryBot.create(:user)
-    @team = FactoryBot.build(:team)
-    @team.work = 'true'
-    @team.save
-    @schedule = FactoryBot.create(:schedule, user_id:@user.id, team_id:@team.id)
-  end
-
-  context '予約の詳細が確認できるとき'do
-
-    it 'ログインしているユーザーは詳細ページに遷移して予約の詳細が表示される' do
-      # ログインする
-      visit new_user_session_path
-      fill_in '名前', with: @user.name
-      fill_in 'パスワード', with: @user.password
-      find('input[name="commit"]').click
-      expect(current_path).to eq(root_path)
-      # トップページに遷移する
-      visit root_path
-      # 予約詳細ページへのリンクがあることを確認する
-      expect(page).to have_content('予約詳細')
-      click_link '予約詳細'      
-      # 予約の詳細ページに遷移したことを確認確認する
-      expect(current_path).to eq(schedule_path(@schedule.id))
-    end
-    it 'ログインしていなくても詳細ページに遷移して予約の詳細が表示される' do
-      # トップページに遷移する
-      visit root_path
-      # 予約詳細ページへのリンクがあることを確認する
-      expect(page).to have_content('予約詳細')
-      click_link '予約詳細'      
-      # 予約の詳細ページに遷移したことを確認確認する
-      expect(current_path).to eq(schedule_path(@schedule.id))
-    end
-    end
-  end
