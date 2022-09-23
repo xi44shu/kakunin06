@@ -1,4 +1,4 @@
-<div class="schedule_edit">予約を変更する</div>
+<div class="schedule_edit">予約内容を変更する</div>
 <%= form_with model: @schedule, url: schedule_path, method: :put, local: true do |f| %>
 <div class="hissu_input">必須項目</div>
 <%= f.label :日付を選択, class: 'lavel' %>
@@ -15,10 +15,13 @@
 <%= f.collection_select(:mie_id, Mie.all, :id, :name, {}, {class:"mie-select"}) %>
 <%= f.label :連絡元を選択, class: 'lavel' %>
 <%= f.collection_select(:first_contact_id, FirstContact.all, :id, :name, {}, {class:"first_contact-select"}) %>
-<%= f.submit "登録する" %>
+<%= f.submit "予約を変更する" %>
 <% end %>
 
-<div class="schedule_copy_create">新規予約する</div>
+<%
+=begin
+%>
+<div class="schedule_copy_create">予約内容をコピーして新規予約をする</div>
 <%= form_with model: @schedule, url: schedules_path, method: :post, local: true do |f| %>
 <div class="hissu_input">必須項目</div>
 <%= f.label :日付を選択, class: 'lavel' %>
@@ -35,5 +38,8 @@
 <%= f.collection_select(:mie_id, Mie.all, :id, :name, {}, {class:"mie-select"}) %>
 <%= f.label :連絡元を選択, class: 'lavel' %>
 <%= f.collection_select(:first_contact_id, FirstContact.all, :id, :name, {}, {class:"first_contact-select"}) %>
-<%= f.submit "登録する" %>
+<%= f.submit "新規で予約登録する" %>
 <% end %>
+<%
+=end
+%>
