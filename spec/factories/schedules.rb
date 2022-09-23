@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :schedule do
-    scheduled_date { Faker::Date.backward }       
+    scheduled_date { (Date.today)+1 }       
     time_zone_id { '2' }       
     accuracy_id { '2' }        
     size_id { '2' }            
