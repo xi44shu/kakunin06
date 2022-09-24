@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Schedule, type: :model do
   before do
-    @schedule = FactoryBot.create(:schedule)
+    @schedule = FactoryBot.build(:schedule)
   end
 
   describe '新規予約登録' do
@@ -19,7 +19,16 @@ RSpec.describe Schedule, type: :model do
       it 'schedule_dateが存在しないと登録できない' do
         @schedule.scheduled_date = ""
         @schedule.valid?
-        expect(@schedule.errors.full_messages).to include("Scheduled dateを入力してください")
+        expect(@schedule.errors.full_messages).to include("予約日を入力してください")
+      end
+      it 'schedule_dateとtime_zoneとteamが同じだと登録できない' do
+        @schedule.save
+        @another_schedule = FactoryBot.build(:schedule)
+        @another_schedule.scheduled_date = @schedule.scheduled_date
+        @another_schedule.time_zone_id = @schedule.time_zone_id
+        @another_schedule.team_id = @schedule.team_id
+        @another_schedule.valid?
+        expect(@another_schedule.errors.full_messages).to include("予約日は既に埋まっています")
       end
       it 'time_zoneに「---」が選択されている場合は登録できない' do
         @schedule.time_zone_id = 1
